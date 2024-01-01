@@ -27,27 +27,18 @@ class Database {
     }
 
     mongo() {
-        try {
-            const URI = process.env.MONGO_URL;
-            if (!URI) {
+            const MongoURI = process.env.MONGO_URL;
+            if (!MongoURI) {
                 console.log('No URI found');
                 return;
             }
-
-            mongoose.connect(URI, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            })
-            .then(() => {
-                console.log('MongoDB Connected');
-            })
-            .catch((err) => {
-                console.error('MongoDB Connection Error:', err);
+            mongoose.connect(MongoURI).then(() => {
+                console.log('MongoDB connected');
+            }
+            ).catch((err) => {
+                console.error(err);
             });
-        } catch (err) {
-            console.error('Error:', err);
         }
     }
-}
 
 export default new Database();
