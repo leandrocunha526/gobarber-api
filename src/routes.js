@@ -27,9 +27,11 @@ import FileController from './app/controllers/FileController';
 const routes = new Router();
 const upload = multer(multerConfig);
 
-// Users
+// Users - public
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
+
+// Private and private route user update (data protection)
 routes.use(authMiddleware);
 routes.put('/users', UserController.update);
 

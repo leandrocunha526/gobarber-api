@@ -13,6 +13,8 @@ class User extends Model {
             },
             {
                 sequelize,
+                tableName: 'Users',
+                freezeTableName: true,
             }
         );
         this.addHook('beforeSave', async (user) => {

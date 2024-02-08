@@ -11,7 +11,7 @@ class UserControllers {
         });
 
         if (!(await schema.isValid(req.body))) {
-            return res.status(400).json({ error: 'validation fails' });
+            return res.status(400).json({ error: 'Validation fails' });
         }
 
         const userExists = await User.findOne({

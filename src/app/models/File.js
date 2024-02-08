@@ -15,6 +15,8 @@ class File extends Model {
             },
             {
                 sequelize,
+                tableName: 'Files',
+                freezeTableName: true,
             }
         );
         return this;

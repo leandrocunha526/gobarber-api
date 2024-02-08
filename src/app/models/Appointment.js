@@ -22,14 +22,16 @@ class Appointment extends Model {
             },
             {
                 sequelize,
+                tableName: 'Appointments',
+                freezeTableName: true,
             }
         );
         return this;
     }
 
     static associate(models) {
-        this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
-        this.belongsTo(models.User, {
+        this.belongsTo(models.Users, { foreignKey: 'user_id', as: 'users' });
+        this.belongsTo(models.Users, {
             foreignKey: 'provider_id',
             as: 'provider',
         });

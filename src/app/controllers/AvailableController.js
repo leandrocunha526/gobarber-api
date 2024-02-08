@@ -60,7 +60,7 @@ class AvailableController {
                     new Date() &&
                         !appointments.find(
                             (ap) => format(ap.date, 'HH:mm') === time
-                        )
+                        ),
                 ),
             };
         });
