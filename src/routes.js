@@ -40,9 +40,9 @@ routes.get('/providers', ProviderController.index);
 routes.get('/providers/:providerId/available', AvailableController.index);
 
 // Appointment
-routes.post('/providers', AppointmentController.store);
-routes.get('/providers', AppointmentController.index);
-routes.delete('/providers', AppointmentController.delete);
+routes.post('/appointments', AppointmentController.store);
+routes.get('/appointments', AppointmentController.index);
+routes.delete('/appointments/:id', AppointmentController.delete);
 
 // Schedule
 routes.get('/schedule', ScheduleController.index);

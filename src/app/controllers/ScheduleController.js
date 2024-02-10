@@ -6,35 +6,35 @@ import User from '../models/User';
 
 class ScheduleController {
     async index(req, res) {
-        const checkUserProvider = await User.findOne({
+        const providerExists = await User.findOne({
             where: { id: req.userId, provider: true },
         });
 
-        if (!checkUserProvider) {
-            return res.status(401).json({ error: 'User is not a provider' });
+        if (!providerExists) {
+            return res.status(400).json({ error: 'Provider does not exists' });
         }
 
         const { date } = req.query;
-        const parseDate = parseISO(date);
+        const parsedDate = parseISO(date);
 
-        const Appointments = await Appointment.findAll({
+        const schedules = await Appointment.findAll({
             where: {
                 provider_id: req.userId,
                 canceled_at: null,
                 date: {
-                    [Op.between]: [startOfDay(parseDate), endOfDay(parseDate)],
+                    [Op.between]: [startOfDay(parsedDate), endOfDay(parsedDate)],
                 },
             },
             include: [
                 {
                     model: User,
                     as: 'user',
-                    attributes: ['name'],
+                    attributes: ['id', 'name', 'email'],
                 },
             ],
             order: ['date'],
         });
-        return res.json(Appointments);
+        return res.json(schedules);
     }
 }
 

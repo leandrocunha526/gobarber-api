@@ -8,7 +8,7 @@ import Notification from '../schemas/Notification';
 
 class AppointmentController {
     async index(req, res) {
-        const { page = 1 } = req.body;
+        const { page = 1 } = req.query;
 
         const appointments = await Appointment.findAll({
             where: { user_id: req.userId, canceled_at: null },
@@ -16,20 +16,16 @@ class AppointmentController {
             attributes: ['id', 'date', 'past', 'cancelable'],
             limit: 20,
             offset: (page - 1) * 20,
-            include: [
-                {
-                    model: User,
-                    as: 'provider',
-                    attributes: ['id', 'name'],
-                    include: [
-                        {
-                            model: File,
-                            as: 'avatar',
-                            attributes: ['id', 'path', 'url'],
-                        },
-                    ],
+            include: {
+                model: User,
+                as: 'provider',
+                attributes: ['id', 'name'],
+                include: {
+                    model: File,
+                    as: 'avatar',
+                    attributes: ['id', 'path', 'url'],
                 },
-            ],
+            },
         });
         return res.json(appointments);
     }
@@ -58,9 +54,9 @@ class AppointmentController {
             });
         }
 
-        if (req.userId === provider_id) {
+        if (provider === req.userId) {
             return res
-                .status(401)
+                .status(400)
                 .json({ error: "You can't create appointments with youself" });
         }
 
@@ -90,7 +86,7 @@ class AppointmentController {
         const appointment = await Appointment.create({
             user_id: req.userId,
             provider_id,
-            date: hourStart,
+            date,
         });
 
         const user = await User.findByPk(req.userId);
