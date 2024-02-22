@@ -55,13 +55,13 @@ class UserControllers {
 
         const user = await User.findByPk(req.userId);
 
-        if (email && email !== user.email) {
+        if (email !== user.email) {
             const userExists = await User.findOne({
                 where: { email },
             });
 
             if (userExists) {
-                return res.status(400).json({ error: 'User already exists' });
+                return res.status(400).json({ error: 'Email already exists as a user' });
             }
         }
         if (oldPassword && !(await user.checkPassword(oldPassword))) {
@@ -73,7 +73,6 @@ class UserControllers {
         const {
             id,
             name,
-            email: NewEmail,
             avatar,
         } = await User.findByPk(req.userId, {
             include: [
@@ -87,7 +86,7 @@ class UserControllers {
         return res.json({
             id,
             name,
-            email: NewEmail,
+            email,
             avatar,
         });
     }
